@@ -11,8 +11,8 @@ Supports HTTP/HTTPS and WebSockets.
 
 ## Usage
 
-* generate self-signed certificates in `certs/` if HTTPS is needed
-* update `server.exs` handles to match your needs, drop the things you don't need
+* replace self-signed certificates in `certs/` if HTTPS is needed;
+* update `server.exs` to match your needs, drop the things you don't need;
 * run the server
 ```bash
 elixir server.exs
