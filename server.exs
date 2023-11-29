@@ -70,7 +70,7 @@ defmodule WSEchoServer do
   end
 
   def terminate(reason, state) do
-    Logger.info("Terminating websocket connection: #{inspect reason}")
+    Logger.info("Terminating websocket connection: #{inspect(reason)}")
     {:ok, state}
   end
 end
@@ -79,27 +79,26 @@ end
 # Starting the webserver
 ######################################################################
 
-webservers = [{
-  Bandit,
-  [
-    plug: MyPlug,
-    scheme: :http,
-    port: http_port
-  ]
-},
-{
-  Bandit,
-  [
-    plug: MyPlug,
-    scheme: :https,
-    certfile: Path.expand("../certs/server.crt",  __ENV__.file),
-    keyfile: Path.expand("../certs/server.key",  __ENV__.file),
-    port: https_port
-  ]
-}
-
+webservers = [
+  {
+    Bandit,
+    [
+      plug: MyPlug,
+      scheme: :http,
+      port: http_port
+    ]
+  },
+  {
+    Bandit,
+    [
+      plug: MyPlug,
+      scheme: :https,
+      certfile: Path.expand("../certs/server.crt", __ENV__.file),
+      keyfile: Path.expand("../certs/server.key", __ENV__.file),
+      port: https_port
+    ]
+  }
 ]
 
 {:ok, _} = Supervisor.start_link(webservers, strategy: :one_for_one)
 Process.sleep(:infinity)
-
