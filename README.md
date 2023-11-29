@@ -9,8 +9,11 @@ Used for testing and debugging.
 
 Supports HTTP/HTTPS and WebSockets.
 
-## Run
+## Usage
 
+* generate self-signed certificates in `certs/` if HTTPS is needed
+* update `server.exs` handles to match your needs, drop the things you don't need
+* run the server
 ```bash
 elixir server.exs
 ```
@@ -18,8 +21,6 @@ elixir server.exs
 ## Accessing
 
 ### HTTPS with `curl`
-* generate a self-signed certificates
-* run
 ```bash
 curl --resolve server:4001:127.0.0.1 --cacert certs/ca.crt 'https://server:4001/test'
 ```
