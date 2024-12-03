@@ -79,13 +79,15 @@ end
 # Starting the webserver
 ######################################################################
 
+thousand_island_options = [read_timeout: :infinity]
 webservers = [
   {
     Bandit,
     [
       plug: MyPlug,
       scheme: :http,
-      port: http_port
+      port: http_port,
+      thousand_island_options: thousand_island_options
     ]
   },
   {
@@ -95,7 +97,8 @@ webservers = [
       scheme: :https,
       certfile: Path.expand("../certs/server.crt", __ENV__.file),
       keyfile: Path.expand("../certs/server.key", __ENV__.file),
-      port: https_port
+      port: https_port,
+      thousand_island_options: thousand_island_options
     ]
   }
 ]
