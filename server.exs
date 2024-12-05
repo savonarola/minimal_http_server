@@ -25,10 +25,19 @@ defmodule MyPlug do
   plug(:match)
   plug(:dispatch)
 
-  get "/test" do
+  get "/auth" do
+    result = case conn.params do
+      %{"clientid" => "xyz", "peerhost" => "127.0.0.1"} -> :allow
+      _ -> :deny
+    end
+
+    response = %{<<"result">> => result}
+    Logger.debug("Auth params: #{inspect(conn.params)}, response: #{inspect(response)}")
+
     conn
     |> put_resp_header("content-type", "application/json")
-    |> send_resp(200, Jason.encode!(%{<<"result">> => <<"ok">>}))
+    |> send_resp(200, Jason.encode!(response))
+    |> halt()
   end
 
   get "/" do
@@ -80,6 +89,7 @@ end
 ######################################################################
 
 thousand_island_options = [read_timeout: :infinity]
+
 webservers = [
   {
     Bandit,
