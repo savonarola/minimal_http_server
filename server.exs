@@ -17,7 +17,8 @@ defmodule MyPlug do
   use Plug.Router
 
   plug(Plug.Parsers,
-    parsers: [:urlencoded]
+    parsers: [:urlencoded, :json, :multipart],
+    json_decoder: Jason
   )
 
   plug(Plug.Logger, log: :debug)
@@ -26,6 +27,21 @@ defmodule MyPlug do
   plug(:dispatch)
 
   get "/test" do
+    conn
+    |> put_resp_header("content-type", "application/json")
+    |> send_resp(200, Jason.encode!(%{<<"result">> => <<"ok">>}))
+  end
+
+  ## curl -X POST http://127.0.0.1:4000/test \
+  ## -H "Content-Type: application/json" \
+  ## -d '{"key":"value","count":123}'
+  ##
+  ## curl -X POST http://127.0.0.1:4000/test \
+  ## -F "username=alice" \
+  ## -F "age=30"
+ 
+  post "/test" do
+    Logger.info("Body params: #{inspect(conn.body_params)}")
     conn
     |> put_resp_header("content-type", "application/json")
     |> send_resp(200, Jason.encode!(%{<<"result">> => <<"ok">>}))
